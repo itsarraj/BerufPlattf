@@ -1,0 +1,47 @@
+// Abstracts
+@use "../abstracts/" as *;
+
+/* ========== */
+/* Typography */
+/* ========== */
+
+// Google Fonts Import
+// @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap');
+
+/* Standard mobile-first typography */
+@include font-sizes(2rem, 1.125rem, 1rem, 0.875rem, 0.8125rem, 0.75rem, 0.75rem);
+
+/* Mobile typography fixes for small screens: 320px and above */
+@include breakpoint-min(ss-var($breakpoints, "320")) {
+    @include font-sizes(2rem, 1.125rem, 1rem, 0.875rem, 0.8125rem, 0.75rem, 0.75rem);
+}
+
+/* Tablet typography: 768px+ */
+@include breakpoint-min(ss-var($breakpoints, "768")) {
+    @include font-sizes(2rem, 1.125rem, 1rem, 0.875rem, 0.8125rem, 0.75rem, 0.75rem);
+}
+
+/* Tablet typography: 1024px+ */
+@include breakpoint-min(ss-var($breakpoints, "1024")) {
+    @include font-sizes(2.25rem, 1.25rem, 1.125rem, 0.875rem, 0.8125rem, 0.75rem, 0.75rem);
+}
+
+/* Computer typography: 1280px+ */
+@include breakpoint-min(ss-var($breakpoints, "1280")) {
+    @include font-sizes(2.25rem, 1.25rem, 1.125rem, 0.875rem, 0.8125rem, 0.75rem, 0.75rem);
+}
+
+/* Computer typography: 1440px+ */
+@include breakpoint-min(ss-var($breakpoints, "1440")) {
+    @include font-sizes(2.4rem, 1.375rem, 1.125rem, 0.875rem, 0.8125rem, 0.75rem, 0.75rem);
+}
+
+/* Computer typography: 1920px+ */
+@include breakpoint-min(ss-var($breakpoints, "1920")) {
+    @include font-sizes(2.6rem, 1.5rem, 1.125rem, 0.875rem, 0.8125rem, 0.75rem, 0.75rem);
+}
+
+/* Computer typography: 2560px+ */
+@include breakpoint-min(ss-var($breakpoints, "2560")) {
+    @include font-sizes(2.6rem, 1.5rem, 1.25rem, 1rem, 0.875rem, 0.75rem, 0.75rem);
+}
