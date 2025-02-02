@@ -1,0 +1,187 @@
+// Abstracts
+@use "../abstracts/" as *;
+
+/* Forms */
+
+/* Input */
+
+input,
+textarea {
+  transition: all 150ms linear;
+  opacity: 0.85;
+  outline: none !important;
+  text-wrap: none;
+  line-height: $line-height-base;
+
+
+  resize: vertical;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: ss-var($colors, "primary", "gold-sun") transparent;
+
+  // Custom scrollbar styling for WebKit browsers
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: ss-var($colors, "primary", "gold-sun");
+    border-radius: 4px;
+  }
+
+  @include input(
+    250px,
+    44px,
+    ss-var($colors, "primary", "charcoal-gray"),
+    ss-var($colors, "primary", "gold-sun"),
+    14px,
+    ss-var($font-weight, "normal"),
+    0.5em,
+    0,
+    solid,
+    none,
+    2px 2px 0px 0px ss-var($colors, "neutral", "midnight-black")
+  );
+
+  &::placeholder {
+    color: ss-var($colors, "neutral", "midnight-black");
+    opacity: 50%;
+  }
+
+  &:hover {
+    @include input(
+      250px,
+      44px,
+      ss-var($colors, "primary", "gold-sun"),
+      ss-var($colors, "primary", "charcoal-gray"),
+      14px,
+      ss-var($font-weight, "normal"),
+      0.5em,
+      0,
+      solid,
+      none,
+      2px 2px 0px 0px ss-var($colors, "neutral", "midnight-black")
+    );
+
+    &::placeholder {
+      color: ss-var($colors, "neutral", "midnight-black");
+      opacity: 50%;
+    }
+  }
+
+  &:active {
+    @include input(
+      250px,
+      44px,
+      ss-var($colors, "primary", "charcoal-gray"),
+      ss-var($colors, "primary", "gold-sun"),
+      14px,
+      ss-var($font-weight, "normal"),
+      0.5em,
+      0,
+      solid,
+      none,
+      none !important
+    );
+
+    &::placeholder {
+      color: ss-var($colors, "primary", "gold-sun");
+      opacity: 50%;
+    }
+    transform: translateY(2px) translateX(2px);
+    // box-shadow: none !important;
+  }
+
+  &:focus {
+    @include input(
+      250px,
+      44px,
+      ss-var($colors, "primary", "charcoal-gray"),
+      ss-var($colors, "primary", "gold-sun"),
+      14px,
+      ss-var($font-weight, "normal"),
+      0.5em,
+      0,
+      solid,
+      none,
+      2px 2px 0px 0px ss-var($colors, "primary", "gold-sun")
+    );
+
+    &::placeholder {
+      color: ss-var($colors, "primary", "gold-sun");
+      opacity: 50%;
+    }
+  }
+
+  &:disabled {
+    @include input(
+      250px,
+      44px,
+      ss-var($colors, "primary", "charcoal-gray"),
+      ss-var($colors, "neutral", "midnight-black"),
+      14px,
+      ss-var($font-weight, "normal"),
+      0.5em,
+      0,
+      solid,
+      none,
+      none
+    );
+
+    &::placeholder {
+      color: ss-var($colors, "neutral", "midnight-black");
+      opacity: 50%;
+    }
+    transform: none;
+    cursor: not-allowed;
+  }
+
+}
+
+// input {
+//   width: 380px;
+//   height: 88px;
+// }
+
+// .input-area-width-380 {
+//   input {
+//     width: 380px;
+//   };
+// }
+
+// .input-area-height-88 {
+//   input {
+//     height: 88px;
+//   };
+// }
+
+textarea {
+  width: 380px;
+  height: 88px;
+  &:hover {
+    width: 380px;
+    height: 88px;
+  }
+
+  &:active {
+    width: 380px;
+    height: 88px;
+  }
+
+  &:focus {
+    width: 380px;
+    height: 88px;
+  }
+
+  &:disabled {
+    width: 380px;
+    height: 88px;
+  }
+}
+
+// TODO: complete the styling for all 4 types of things with breakpoints
+// for the different screen sizes with input and textarea

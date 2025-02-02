@@ -1,0 +1,36 @@
+@use "variables" as *;
+@use "functions" as *;
+
+/* ============================== */
+/* Export variables to JavaScript */
+/* ============================== */
+/* Load the SASS variables that you want into the body::after's content into a JSON format to be converted to a JS object */
+body.load-variables {
+  &::after {
+    position: absolute;
+    visibility: hidden;
+    font-size: 0;
+    z-index: -1;
+    /* Name the object keys the names you want to use in JavaScript, access the variables values with the ss-var() function with interpolation */
+    /* To format the CSS content property in a readable format, the use of a backlash '\' at the end of each line make it possible to break strings */
+    content: '{\
+                "colors": {\
+                  "p_blue": "#{ss-var($colors, "primary", "gold-sun")}",\
+                  "s_darkcoal": "#{ss-var($colors, "secondary", "dark-coal")}",\
+                  "n_black": "#{ss-var($colors, "neutral", "midnight-black")}",\
+                  "n_white": "#{ss-var($colors, "neutral", "pure-white")}"\
+                "font_weight": {\
+                  "regular": "#{ss-var($font-weight, "regular")}",\
+                  "bold": "#{ss-var($font-weight, "bold")}"\
+                "breakpoints": {\
+                  "320": "#{ss-var($breakpoints, "320")}",\
+                  "576": "#{ss-var($breakpoints, "576")}",\
+                  "768": "#{ss-var($breakpoints, "768")}",\
+                  "992": "#{ss-var($breakpoints, "992")}",\
+                  "1024": "#{ss-var($breakpoints, "1024")}",\
+                  "1200": "#{ss-var($breakpoints, "1200")}",\
+                  "1440": "#{ss-var($breakpoints, "1440")}"\
+                }\
+            }';
+  }
+}
