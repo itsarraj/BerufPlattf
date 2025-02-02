@@ -1,0 +1,20 @@
+// Abstracts
+@use "abstracts" as *;
+// Base
+@use "base" as *;
+// Components
+@use "components" as *;
+// Layouts
+// @use "layouts" as *;
+
+/* ======== */
+/* Main CSS */
+/* ======== */
+
+html {
+  background-color: ss-var($colors, "secondary", "dark-coal");
+  color: ss-var($colors, "neutral", "pure-white");
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

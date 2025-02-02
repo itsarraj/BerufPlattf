@@ -1,0 +1,30 @@
+// Abstracts
+@use '../abstracts/' as *;
+
+/* ========= */
+/* Font Face */
+/* ========= */
+
+// @include font-face(
+//   $font-name,
+//   '/fonts/Satoshi/Satoshi-Variable',
+//   700,
+//   'normal',
+//   ttf
+// );
+
+@include font-face(
+  $font-name,
+  '/fonts/edge-display/EdgeDisplay-Regular',
+  400,
+  'normal',
+  otf
+);
+
+@include font-face(
+  $font-name,
+  '/fonts/edge-display/EdgeDisplay-Bold',
+  700,
+  'bold',
+  otf
+);

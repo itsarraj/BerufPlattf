@@ -1,0 +1,90 @@
+// Abstracts
+@use "../abstracts/" as *;
+
+/* Buttons */
+
+button {
+  transition: all 150ms linear;
+  opacity: 0.85;
+
+  @include button(
+    160px,
+    56px,
+    ss-var($colors, "primary", "gold-sun"),
+    ss-var($colors, "primary", "charcoal-gray"),
+    16px,
+    ss-var($font-weight, "bold"),
+    0.5em,
+    0,
+    solid,
+    none,
+    2px 2px 0px 0px ss-var($colors, "neutral", "midnight-black")
+  );
+
+  &:hover {
+    @include button(
+      160px,
+      56px,
+      ss-var($colors, "primary", "charcoal-gray"),
+      ss-var($colors, "primary", "gold-sun"),
+      16px,
+      ss-var($font-weight, "bold"),
+      0.5em,
+      0,
+      solid,
+      none,
+      2px 2px 0px 0px ss-var($colors, "neutral", "midnight-black")
+    );
+  }
+
+  &:active {
+    @include button(
+      160px,
+      56px,
+      ss-var($colors, "primary", "charcoal-gray"),
+      ss-var($colors, "primary", "gold-sun"),
+      16px,
+      ss-var($font-weight, "bold"),
+      0.5em,
+      0,
+      solid,
+      none,
+      none !important,
+    );
+    transform: translateY(2px) translateX(2px);
+    // box-shadow: none !important;
+  }
+
+  &:focus {
+    @include button(
+      160px,
+      56px,
+      ss-var($colors, "primary", "charcoal-gray"),
+      ss-var($colors, "primary", "gold-sun"),
+      16px,
+      ss-var($font-weight, "bold"),
+      0.5em,
+      0,
+      solid,
+      none,
+      2px 2px 0px 0px ss-var($colors, "primary", "gold-sun")
+    );
+  }
+
+  &:disabled {
+    @include button(
+      160px,
+      56px,
+      ss-var($colors, "primary", "charcoal-gray"),
+      ss-var($colors, "neutral", "midnight-black"),
+      16px,
+      ss-var($font-weight, "bold"),
+      0.5em,
+      0,
+      solid,
+      none,
+      none
+    );
+    transform: none;
+  }
+}

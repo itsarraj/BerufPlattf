@@ -1,0 +1,100 @@
+@use "functions" as *;
+// ======================== //
+// Prefixes for class names //
+// ======================== //
+// $prefix: "ss-";
+$prefix: "bp-";
+// ========= //
+// Font name //
+// ========= //
+$font-name: "EdgeDisplay";
+$font-serif: "sans-serif";
+// ============ //
+// Font weights //
+// ============ //
+$font-weight: (
+  "regular": 400,
+  "bold": 700,
+);
+
+// ====== //
+// Colors //
+// ====== //
+$colors: (
+  // Brand colors
+  brand:
+    (
+      "blue-sapphire": #5424fd,
+      // Not used
+      "red-fire": #f5001e,
+      // Not used
+      "gold-sun": #fcc636,
+      // Used for button links and everything clickable
+      "charcoal-gray": #2b2b2b,
+      // Used for button text and mostly clickable text
+      "midnight-black": #000000,
+      // Used for button input area shadow and other inputs
+      "pure-white": #ffffff,
+      // Used for normal text, headings, and background highlights
+      "dark-coal": #1f1f1f // Main background color,,,,,
+    ),
+  // Main colors
+  primary:
+    (
+      "gold-sun": #fcc636,
+      // Used for button links, etc., and flip to charcoal-gray when clicked
+      "charcoal-gray": #2b2b2b
+        // Used for button text and mostly clickable text,,,,,
+    ),
+  // Secondary colors
+  secondary:
+    (
+      "dark-coal": #1f1f1f // Main background color,,,,,
+    ),
+  neutral: (
+    "midnight-black": #000000,
+    // Used for button input area shadow and other inputs
+    "pure-white": #ffffff,
+    // Used for normal text, headings, and background highlights
+  )
+);
+
+// ========================== //
+// Device breakpoints (width) //
+// ========================== //
+$breakpoints: (
+  // Mobile
+  "320": 320px,
+  // "360": 360px,
+  // "375": 375px,
+  // "425": 425px,
+  "576": 576px,
+  // Tablets
+  "768": 768px,
+  // "800": 800px,
+  // "900": 900px,
+  "992": 992px,
+  "1024": 1024px,
+  // Computers (Laptops/Desktops)
+  "1200": 1200px,
+  // "1280": 1280px,
+  // "1366": 1366px,
+  "1440": 1440px,
+  // "1600": 1600px,
+  // "1680": 1680px,
+  // "1920": 1920px,
+  // "2560": 2560px,
+);
+
+// ====== //
+// Shadow //
+// ====== //
+
+// ====== //
+// Line height //
+// ====== //
+
+$line-height-base: 1.428571429; // 20/14
+// $line-height-computed: floor($font-size-base * $line-height-base);
+
+
