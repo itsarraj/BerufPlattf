@@ -1,3 +1,7 @@
+@use "sass:map";
+@use 'sass:list';
+@use "sass:string";
+
 // ================================== //
 // Access nested variable maps values //
 // ================================== //
@@ -5,7 +9,7 @@
   $value: $variable;
 
   @each $key in $keys {
-    $value: map-get($value, $key);
+    $value: map.get($value, $key);
   }
 
   @return $value;
@@ -14,7 +18,7 @@
 // String replace used for font face //
 // ================================= //
 @function str-replace($string, $search, $replace: "") {
-  $index: str-index($string, $search);
+  $index: string.index($string, $search);
 
   @if $index {
     @return str-slice($string, 1, $index - 1) + $replace +

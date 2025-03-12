@@ -2,6 +2,10 @@
 @use "placeholders" as *;
 @use "functions" as *;
 
+@use "sass:map";
+@use 'sass:list';
+@use "sass:string";
+
 // ============= //
 // Media Queries //
 // ============= //
@@ -87,20 +91,20 @@
 
   @each $ext in $exts {
     $extmod: if(
-      map-has-key($extmods, $ext),
+      map.has-key($extmods, $ext),
       $ext + map-get($extmods, $ext),
       $ext
     );
-    $format: if(map-has-key($formats, $ext), map-get($formats, $ext), $ext);
-    $src: append(
+    $format: if(map.has-key($formats, $ext), map.get($formats, $ext), $ext);
+    $src: list.append(
       $src,
-      url(quote($path + "." + $extmod)) format(quote($format)),
+      url(string.quote($path + "." + $extmod)) format(string.quote($format)),
       comma
     );
   }
 
   @font-face {
-    font-family: quote($name);
+    font-family: string.quote($name);
     font-style: $style;
     font-weight: $weight;
     src: $src, local($name);
