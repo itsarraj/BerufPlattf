@@ -1,13 +1,20 @@
-import { createServer, IncomingMessage, ServerResponse } from "http";
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+// Load environment variables
 
-const server = createServer((req: IncomingMessage, res: ServerResponse) => {
-  res.statusCode = 200;
-  res.setHeader("Content-Type", "text/plain");
-  res.end("Hello, World!\n");
-});
+dotenv.config();
+import router from './routes/routes';
+import './database/connection';
 
-const PORT = 3000;
+import { initializeDatabase } from './database/init'; // <- whatever your file is called
 
-server.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}/`);
-});
+async function startServer() {
+    await initializeDatabase();
+
+    // Then your server setup like:
+    const app = express();
+    app.listen(3000, () => console.log('Server running on port 3000'));
+}
+
+startServer();
