@@ -5,6 +5,8 @@ CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     resume_data TEXT,
+    refresh_token VARCHAR(512) DEFAULT NULL,
+    last_logout TIMESTAMP DEFAULT NULL,  -- Fixed trailing semicolon
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -23,6 +25,8 @@ CREATE TABLE IF NOT EXISTS recruiters (
     name VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
+    refresh_token VARCHAR(512) DEFAULT NULL,
+    last_logout TIMESTAMP DEFAULT NULL,  -- Fixed trailing semicolon
     company_id INT,
     FOREIGN KEY (company_id) REFERENCES companies(id) ON DELETE SET NULL
 );
@@ -51,4 +55,26 @@ CREATE TABLE IF NOT EXISTS applications (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (job_id) REFERENCES jobs(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS revoked_tokens (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  token VARCHAR(512) NOT NULL,
+  revoked_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS rate_limits (
+  ip VARCHAR(45) NOT NULL,
+  endpoint VARCHAR(255) NOT NULL,
+  hits INT DEFAULT 1,
+  last_hit TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (ip, endpoint)
+);
+
+-- Benchmarking Tables
+CREATE TABLE IF NOT EXISTS benchmark_users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255),
+  email VARCHAR(255),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

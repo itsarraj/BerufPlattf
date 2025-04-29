@@ -6,7 +6,8 @@ export const pool = mariadb.createPool({
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
   connectionLimit: 5,
-  multipleStatements: true
+  multipleStatements: true,
+  bigIntAsNumber: true,
 });
 
 async function asyncFunction() {
