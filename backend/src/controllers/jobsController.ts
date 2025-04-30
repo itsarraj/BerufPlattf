@@ -39,7 +39,6 @@ export const createJob = async (req: AuthenticatedRequest, res: Response) => {
       id: result.insertId.toString(),
       message: 'Job created successfully'
     });
-    return;
   } catch (error) {
     logger.error('Job creation failed', { error });
     res.status(500).json({ error: 'Failed to create job' });
@@ -57,9 +56,8 @@ export const getRecruiterJobs = async (req: AuthenticatedRequest, res: Response)
       'SELECT * FROM jobs WHERE company_id = ?',
       [req.user!.company_id]
     );
-    console.log('-----------------',jobs);
+
     res.json(jobs);
-    return;
   } catch (error) {
     logger.error('Failed to fetch recruiter jobs', { error });
     res.status(500).json({ error: 'Failed to fetch jobs' });
@@ -95,7 +93,6 @@ export const getJobMatches = async (req: AuthenticatedRequest, res: Response) =>
     );
 
     res.json(matches);
-    return;
   } catch (error) {
     logger.error('Failed to fetch job matches', { error });
     res.status(500).json({ error: 'Failed to fetch job matches' });
@@ -113,7 +110,6 @@ export const listPublicJobs = async (req: Request, res: Response) => {
       'SELECT id, title, description, location FROM jobs'
     );
     res.json(jobs);
-    return;
   } catch (error) {
     logger.error('Failed to list public jobs', { error });
     res.status(500).json({ error: 'Failed to fetch jobs' });
@@ -141,7 +137,6 @@ export const getJobDetails = async (req: Request, res: Response) => {
     }
 
     res.json(jobs[0]);
-    return;
   } catch (error) {
     logger.error('Failed to fetch job details', { error });
     res.status(500).json({ error: 'Failed to fetch job details' });
