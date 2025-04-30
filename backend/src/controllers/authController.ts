@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import { pool } from '../database/connection';
 import { hashPassword, validatePassword } from '../utils/helpers';
 import logger from '../utils/logger';
+import { AuthenticatedRequest } from '../interfaces/authRequest';
 
 
 export const registerUser = async (req: Request, res: Response) => {
@@ -182,7 +183,7 @@ export const refreshToken = async (req: Request, res: Response) => {
   }
 };
 
-export const logoutUser = async (req: Request, res: Response) => {
+export const logoutUser = async (req: AuthenticatedRequest , res: Response) => {
   const conn = await pool.getConnection();
   const token = req.headers.authorization?.split(' ')[1];
 
@@ -199,11 +200,11 @@ export const logoutUser = async (req: Request, res: Response) => {
     );
 
     // Clear refresh token
-    // const table = req.user.role === 'recruiter' ? 'recruiters' : 'users';
-    // await conn.execute(
-    //   `UPDATE ${table} SET refresh_token = NULL, last_logout = NOW() WHERE id = ?`,
-    //   [req.user.id]
-    // );
+    const table = req.user?.role === 'recruiter' ? 'recruiters' : 'users';
+    await conn.execute(
+      `UPDATE ${table} SET refresh_token = NULL, last_logout = NOW() WHERE id = ?`,
+      [req.user?.id]
+    );
 
     res.status(200).json({ message: 'Logged out successfully' });
     return;
