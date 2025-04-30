@@ -13,9 +13,9 @@ export const requestLogger = () => {
 
     // Capture response body
     const oldSend = res.send;
-    res.send = function(body: any) {
+    res.send = function(body: any): any {
       res.locals.body = body;
-      return oldSend.apply(res, arguments);
+      return oldSend.apply(res, arguments as unknown as [any?]);
     };
 
     // Log response details

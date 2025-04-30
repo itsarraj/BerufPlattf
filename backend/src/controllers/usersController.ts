@@ -19,7 +19,6 @@ export const getUserProfile = async (req: AuthenticatedRequest, res: Response) =
     }
 
     res.json(user[0]);
-    return;
   } catch (error) {
     logger.error('Get user profile failed', { error });
     res.status(500).json({ error: 'Failed to fetch profile' });
@@ -45,7 +44,6 @@ export const updateUserProfile = async (req: AuthenticatedRequest, res: Response
     );
 
     res.json({ message: 'Profile updated successfully' });
-    return;
   } catch (error) {
     logger.error('Update profile failed', { error });
     res.status(500).json({ error: 'Profile update failed' });
@@ -71,7 +69,6 @@ export const parseResume = async (req: AuthenticatedRequest, res: Response) => {
     );
 
     res.json({ message: 'Resume processed successfully' });
-    return;
   } catch (error) {
     logger.error('Resume processing failed', { error });
     res.status(500).json({ error: 'Resume processing failed' });

@@ -1,22 +1,26 @@
 // src/routes/routes.ts
-import express from 'express';
-import authRoutes from './authRoutes';
+import { Router } from 'express';
 import usersRoutes from './usersRoutes';
-import jobsRoutes from './jobsRoutes';
 import applicationsRoutes from './applicationsRoutes';
+import jobsRoutes from './jobsRoutes';
 import companiesRoutes from './companiesRoutes';
-import recruitersRoutes from './recruitersRoutes';
+import authRoutes from './authRoutes';
+import { auth } from '../middlewares/auth';
 
-const router = express.Router();
+const router = Router();
 
 // Public routes
 router.use('/auth', authRoutes);
 router.use('/jobs', jobsRoutes);
 
 // Protected routes
-// router.use('/users', usersRoutes);
+router.use('/users', usersRoutes);
 router.use('/applications', applicationsRoutes);
 router.use('/companies', companiesRoutes);
-router.use('/recruiters', recruitersRoutes);
+
+// Add a simple test route
+router.get('/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
 
 export default router;
