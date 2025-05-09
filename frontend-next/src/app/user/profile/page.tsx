@@ -1,5 +1,37 @@
-export default function UserProfile() {
+'use client';
+import { useAppDispatch, useAppSelector } from '@/lib/store';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { updateUserProfile } from '@/features/user/userSlice';
+
+export default function ProfilePage() {
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.auth);
+  const { status } = useAppSelector((state) => state.user);
+  const { register, handleSubmit, setValue } = useForm();
+
+  useEffect(() => {
+    if (user) {
+      setValue('name', user.name);
+      setValue('email', user.email);
+    }
+  }, [user, setValue]);
+
+  const onSubmit = (data: { name: string; email: string }) => {
+    dispatch(updateUserProfile(data));
+  };
+
   return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      {/* Profile fields */}
+      <button type="submit" disabled={status === 'loading'}>
+        {status === 'loading' ? 'Saving...' : 'Save Changes'}
+      </button>
+    </form>
+  );
+}
+
+function UserProfile() {
     <div className="h-[1419px] w-80 flex flex-col gap-6 bg-[#1f1f1f] px-6 py-[72px] rounded-3xl">
       <div className="flex flex-col gap-6">
         {/* Back Button */}
