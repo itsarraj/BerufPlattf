@@ -1,3 +1,31 @@
+'use client';
+import { useAppDispatch } from '@/lib/store';
+import { useForm } from 'react-hook-form';
+import { createJob } from '@/features/jobs/jobsSlice';
+import { useRouter } from 'next/navigation';
+
+export default function JobPostPage() {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const { register, handleSubmit } = useForm();
+
+  const onSubmit = (data: {
+    title: string;
+    description: string;
+    location: string;
+  }) => {
+    dispatch(createJob(data))
+      .unwrap()
+      .then(() => router.push('/jobs'));
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      {/* Job form fields */}
+      <button type="submit">Post Job</button>
+    </form>
+  );
+}
 export default function JobPostForm() {
   return (
     <div className="h-[2396px] w-80 flex flex-col gap-6 bg-[#1f1f1f] px-6 py-[72px] rounded-3xl">
