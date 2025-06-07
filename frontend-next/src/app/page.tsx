@@ -1,24 +1,51 @@
-'use client';
+'use client'
+import './globals.css';
+import Image from 'next/image';
+import { Button } from '@/components/ui/Button';
+import { BackButton } from '@/components/ui/BackButton';
+import { Input } from '@/components/ui/Input';
+import Link from 'next/link';
+import { Divider } from '@/components/ui/Divider';
+import { Select } from '@/components/ui/Select';
+import { Textarea } from '@/components/ui/Textarea';
+// import { useRouter } from 'next/navigation';
 
-import { useRouter } from 'next/router';
-import style from './welcome.module.scss';
-import "@/app/styles/main.scss";
+export default async function Home() {
 
-export default function Home() {
-  const router = useRouter()
+  // const router = useRouter();
   return (
-    <div className="h-[900px] w-80 flex flex-col gap-6 bg-[#1f1f1f] px-6 py-[72px] rounded-3xl">
-      <div className="flex flex-col gap-6">
-        {/* CTA Section */}
-        <div className="flex flex-col items-center gap-6">
-          <h2 className="font-bold text-white text-center text-xl">
-            Your search for the next dream job is over 🚀
-          </h2>
-          <button onClick={() => router.push} className="w-40 h-14 bg-[#FCC636] text-[#2B2B2B] font-bold px-4 py-3 rounded-lg">
+    <div className="container-padding flex flex-col items-center justify-center gap-12 min-h-screen">
+      <div className="flex flex-col items-center gap-8 text-center">
+        <h1 className="text-heading-1 ">
+          Your search for the next dream job is over 🚀
+        </h1>
+        <p className="text-body text-light-gray">
+          Discover thousands of job opportunities from top companies around the world.
+          Tailor your search to find the perfect match for your skills and career goals.
+        </p>
+        <Link href="/homepage">
+          <Button
+            variant="primary"
+            size="xl"
+          >
             Start Searching
-          </button>
-        </div>
-        <img src="./assets/root-logos.png" alt="root logos" />
+          </Button>
+        </Link>
+        <BackButton href="/back"/>
+        <Divider/>
+        <Select fullWidth={true}/>
+        <Input  fullWidth={true}/>
+        <Textarea fullWidth={true}/>
+      </div>
+
+      <div className="mt-8">
+        {/* <Image
+          src="/assets/root-logos.png"
+          alt="Featured companies"
+          width={800}
+          height={300}
+          className="max-w-full"
+        /> */}
       </div>
     </div>
   );

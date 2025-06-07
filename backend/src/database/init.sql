@@ -1,80 +1,78 @@
--- Create users table
+-- Core User Table (Minimal Structure)
+
 CREATE TABLE IF NOT EXISTS users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    email VARCHAR(100) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    resume_data TEXT,
-    refresh_token VARCHAR(512) DEFAULT NULL,
-    last_logout TIMESTAMP DEFAULT NULL,  -- Fixed trailing semicolon
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Create companies table
-CREATE TABLE IF NOT EXISTS companies (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(150) NOT NULL,
-    description TEXT,
-    website VARCHAR(255),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Create recruiters table
-CREATE TABLE IF NOT EXISTS recruiters (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    email VARCHAR(100) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    refresh_token VARCHAR(512) DEFAULT NULL,
-    last_logout TIMESTAMP DEFAULT NULL,  -- Fixed trailing semicolon
-    company_id INT,
-    FOREIGN KEY (company_id) REFERENCES companies(id) ON DELETE SET NULL
-);
-
--- Create jobs table
-CREATE TABLE IF NOT EXISTS jobs (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    company_id INT NOT NULL,
-    title VARCHAR(150) NOT NULL,
-    description TEXT,
-    location VARCHAR(100),
-    salary_min INT,
-    salary_max INT,
+    id CHAR(36) PRIMARY KEY,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password_hash CHAR(60) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (company_id) REFERENCES companies(id) ON DELETE CASCADE
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- Create applications table
-CREATE TABLE IF NOT EXISTS applications (
+CREATE TABLE IF NOT EXISTS user_refresh_tokens (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    job_id INT NOT NULL,
-    status ENUM('pending', 'reviewed', 'accepted', 'rejected') DEFAULT 'pending',
-    match_score DECIMAL(5,2), -- optional, match percentage like 92.50
-    matched_on DATE, -- when the match was calculated
+    user_id CHAR(36) NOT NULL,
+    refresh_token VARCHAR(512) NOT NULL,
+    device_info VARCHAR(255),
+    ip_address VARCHAR(45),
+    expires_at TIMESTAMP NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    last_used_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (job_id) REFERENCES jobs(id) ON DELETE CASCADE
+    UNIQUE KEY unique_token (refresh_token)
 );
 
-CREATE TABLE IF NOT EXISTS revoked_tokens (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  token VARCHAR(512) NOT NULL,
-  revoked_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+-- Indexes
+-- CREATE UNIQUE INDEX idx_users_email ON users(email);
+
+CREATE TABLE IF NOT EXISTS user_event_logs (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id CHAR(36) NOT NULL,
+    event_type ENUM(
+        'login', 'logout', 'failed_login', 'register', 'refresh_token', 'password_reset', 'profile_update', 'other'
+    ) NOT NULL,
+    event_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    ip_address VARCHAR(45),
+    device_info VARCHAR(255),
+    user_agent VARCHAR(512),
+    location VARCHAR(255),
+    metadata JSON,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    INDEX idx_event_user_time (user_id, event_time)
 );
 
-CREATE TABLE IF NOT EXISTS rate_limits (
-  ip VARCHAR(45) NOT NULL,
-  endpoint VARCHAR(255) NOT NULL,
-  hits INT DEFAULT 1,
-  last_hit TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (ip, endpoint)
+-- Recommended Related Tables (Using Foreign Keys)
+-- 1. Phone Numbers (1:1 or 1:Many)
+CREATE TABLE IF NOT EXISTS user_phones (
+    user_id CHAR(36) NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    is_primary BOOLEAN DEFAULT FALSE,
+    verified BOOLEAN DEFAULT FALSE,
+    PRIMARY KEY (user_id, phone),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
--- Benchmarking Tables
-CREATE TABLE IF NOT EXISTS benchmark_users (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(255),
-  email VARCHAR(255),
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+-- Index for phone lookups
+-- CREATE INDEX idx_user_phones_number ON user_phones(phone);
+
+-- 2. Authentication Methods (Supports OAuth/Social Logins)
+CREATE TABLE IF NOT EXISTS auth_providers (
+    user_id CHAR(36) NOT NULL,
+    provider ENUM('email', 'google', 'linkedin') NOT NULL,
+    provider_id VARCHAR(255), -- External provider's user ID
+    access_token TEXT,
+    refresh_token TEXT,
+    expires_at TIMESTAMP,
+    PRIMARY KEY (user_id, provider),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- 3. Profile Data (1:1 Relationship)
+
+CREATE TABLE IF NOT EXISTS user_profiles (
+    user_id CHAR(36) PRIMARY KEY,
+    full_name VARCHAR(255),
+    avatar_url VARCHAR(512),
+    timezone VARCHAR(50),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
