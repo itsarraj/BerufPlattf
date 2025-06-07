@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./frontend-next
+      target: dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend-next:/app
+      # Remove node_modules volume mount
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - NEXT_PUBLIC_API_BASE_URL=http://backend:8000
+
+  backend:
+    build:
+      context: ./backend
+      target: dev
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      # Remove node_modules volume mount
+      - ./backend/logs:/app/logs
+      - ./backend/uploads:/app/uploads
+    environment:
+      - NODE_ENV=development
+      - AI_SERVICE_URL=http://ai:8001
+
+  ai:
+    build:
+      context: ./ai_microservice
+      target: runtime  # Use specific target
+    ports:
+      - "8001:8001"

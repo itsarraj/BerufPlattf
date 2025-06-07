@@ -1,29 +1,37 @@
-import { Pipeline } from '@haystack/core';
-import { PDFProcessor } from 'some-pdf-library';
-import { SentenceTransformer } from 'sentence-transformers';
+// import axios from 'axios';
 
-export class AIMatcher {
-  private pipeline: Pipeline;
-  private embedder: SentenceTransformer;
+// const AI_SERVICE_URL = process.env.AI_SERVICE_URL || 'http://localhost:8001';
 
-  constructor() {
-    this.pipeline = new Pipeline();
-    this.pipeline.addProcessor(new PDFProcessor());
-    this.embedder = new SentenceTransformer('all-MiniLM-L6-v2');
-  }
+// export async function parseResume(filePath: string): Promise<any> {
+//     try {
+//         const formData = new FormData();
+//         formData.append('file', fs.createReadStream(filePath));
 
-  async parseResume(buffer: Buffer): Promise<string> {
-    const { text } = await this.pipeline.process(buffer);
-    return text;
-  }
+//         const response = await axios.post(
+//             `${AI_SERVICE_URL}/parse-resume`,
+//             formData,
+//             {
+//                 headers: {'Content-Type': 'multipart/form-data'}
+//             }
+//         );
 
-  async calculateMatchScore(resumeText: string, jobDescription: string): Promise<number> {
-    const resumeEmbedding = await this.embedder.encode(resumeText);
-    const jobEmbedding = await this.embedder.encode(jobDescription);
-    return this.cosineSimilarity(resumeEmbedding, jobEmbedding);
-  }
+//         return response.data;
+//     } catch (error) {
+//         console.error('Resume parsing error:', error);
+//         throw error;
+//     }
+// }
 
-  private cosineSimilarity(a: number[], b: number[]): number {
-    // Implementation
-  }
-}
+// export async function matchJobResumes(jobDescription: string, resumeTexts: string[]): Promise<number[]> {
+//     try {
+//         const response = await axios.post(`${AI_SERVICE_URL}/match`, {
+//             job_description: jobDescription,
+//             resume_texts: resumeTexts
+//         });
+
+//         return response.data.scores;
+//     } catch (error) {
+//         console.error('Matching error:', error);
+//         throw error;
+//     }
+// }

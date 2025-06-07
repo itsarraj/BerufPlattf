@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { pool } from '../database/connection';
 import logger from '../utils/logger';
 import { AuthenticatedRequest } from '@/interfaces/authRequest';
-
+// import { matchJobResumes } from '../services/aiMatcher';
 
 export const createJob = async (req: AuthenticatedRequest, res: Response) => {
   const conn = await pool.getConnection();
@@ -145,3 +145,30 @@ export const getJobDetails = async (req: Request, res: Response) => {
     conn.release();
   }
 };
+
+
+// In your job matching endpoint
+// const matchCandidates = async (req: Request, res: Response) => {
+//     try {
+//         const jobId = req.params.id;
+//         const job = await getJobById(jobId);
+
+//         // Get relevant resumes (pseudo-code)
+//         const candidates = await getQualifiedCandidates();
+//         const resumeTexts = candidates.map(c => c.resume_text);
+
+//         // Get AI matching scores
+//         const scores = await matchJobResumes(job.description, resumeTexts);
+
+//         // Combine scores with candidate data
+//         const results = candidates.map((candidate, index) => ({
+//             ...candidate,
+//             match_score: scores[index]
+//         })).sort((a, b) => b.match_score - a.match_score);
+
+//         res.json(results.slice(0, 10)); // Return top 10
+//     } catch (error) {
+//         res.status(500).json({ error: 'Matching failed' });
+//     }
+// };
+
