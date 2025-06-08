@@ -3,12 +3,9 @@ import { registerUser, loginUser, refreshToken, logoutUser } from '../controller
 
 const router = Router();
 
-// Public routes
 router.post('/register', registerUser);
 router.post('/login', loginUser);
 router.post('/refresh-token', refreshToken);
-
-// Protected route
 router.post('/logout',  logoutUser);
 
 export default router;

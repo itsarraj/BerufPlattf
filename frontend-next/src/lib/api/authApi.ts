@@ -1,49 +1,51 @@
-import { api } from './axiosConfig';
+import axios from 'axios';
+import { store } from '../store/store';
+import { setLoading, setError } from '../slices/authSlice';
+import { axiosConfig } from './axiosConfig';
 
-interface LoginData {
-  email: string
-  password: string
-}
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
 
-interface RegisterData {
-  name: string
-  email: string
-  password: string
-}
+export const authApi = {
+  register: async (email: string, password: string) => {
+    try {
+      store.dispatch(setLoading(true));
+      const response = await axios.post(`${API_URL}/auth/register`, { email, password }, axiosConfig);
+      return response.data;
+    } catch (error: any) {
+      store.dispatch(setError(error.response?.data?.error || 'Registration failed'));
+      throw error;
+    } finally {
+      store.dispatch(setLoading(false));
+    }
+  },
 
-interface TokenResponse {
-  accessToken: string
-  refreshToken: string
-  user: {
-    id: string
-    name: string
-    email: string
-    role: 'user' | 'recruiter'
+  login: async (email: string, password: string) => {
+    try {
+      store.dispatch(setLoading(true));
+      const response = await axios.post(`${API_URL}/auth/login`, { email, password }, axiosConfig);
+      return response.data;
+    } catch (error: any) {
+      store.dispatch(setError(error.response?.data?.error || 'Login failed'));
+      throw error;
+    } finally {
+      store.dispatch(setLoading(false));
+    }
+  },
+
+  refreshToken: async (refreshToken: string) => {
+    try {
+      const response = await axios.post(`${API_URL}/auth/refresh-token`, { refreshToken }, axiosConfig);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  logout: async (refreshToken: string) => {
+    try {
+      await axios.post(`${API_URL}/auth/logout`, { refreshToken }, axiosConfig);
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
   }
-}
-
-export const authAPI = {
-  login: async (data: LoginData): Promise<TokenResponse> => {
-    const response = await api.post('/auth/login', data)
-    return response.data
-  },
-
-  register: async (data: RegisterData): Promise<{ message: string }> => {
-    const response = await api.post('/auth/register', data)
-    return response.data
-  },
-
-  refreshToken: async (): Promise<TokenResponse> => {
-    const response = await api.post('/auth/refresh-token')
-    return response.data
-  },
-
-  logout: async (): Promise<void> => {
-    await api.post('/auth/logout')
-  },
-
-  verifyToken: async (): Promise<{ isValid: boolean }> => {
-    const response = await api.get('/auth/verify')
-    return response.data
-  }
-}
+};

@@ -1,18 +1,34 @@
 import './globals.css';
-import type { Metadata } from 'next';
 import ReduxProvider from '@/components/providers/ReduxProvider';
 import ToastContainer from '@/components/ui/ToastContainer';
 
-export const metadata: Metadata = {
-  title: 'BerufPlattf - Job Search Platform',
-  description: 'Find your dream job with our advanced job search platform',
-};
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks/redux';
+import { selectIsAuthenticated } from '@/lib/slices/authSlice';
+import { useRouter } from 'next/navigation';
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    // Check token validity on mount
+    const checkAuth = async () => {
+      // Add token refresh logic here
+    };
+
+    if (!isAuthenticated && !['/login', '/register'].includes(window.location.pathname)) {
+      router.push('/login');
+    }
+
+    checkAuth();
+  }, [isAuthenticated, router, dispatch]);
+
   return (
     <html lang="en">
       <body className="bg-dark-coal text-pure-white antialiased">

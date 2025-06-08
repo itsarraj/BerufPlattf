@@ -1,52 +1,50 @@
-// lib/api/axiosConfig.ts
-import axios from 'axios'
-import { makeStore } from '@/lib/store/store'
+import axios from 'axios';
 
-// Create basic axios instance without interceptors
-export const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api',
-})
+const axiosConfig = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || '/api',
+  withCredentials: true,
+});
 
-// Function to create an authenticated axios instance
-export const createAuthApi = (accessToken?: string | null) => {
-  const authApi = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api',
-  })
-
-  // Add request interceptor
-  authApi.interceptors.request.use((config) => {
-    if (accessToken) {
-      config.headers.Authorization = `Bearer ${accessToken}`
+// Request interceptor
+axiosConfig.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
-    return config
-  })
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
-  // Add response interceptor for token refresh
-  authApi.interceptors.response.use(
-    (response) => response,
-    async (error) => {
-      const originalRequest = error.config
+// Response interceptor
+axiosConfig.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
 
-      if (error.response?.status === 401 && !originalRequest._retry) {
-        originalRequest._retry = true
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
 
-        try {
-          // Create temporary store for token refresh
-          const tempStore = makeStore()
-          const { payload } = await tempStore.dispatch(refreshAccessToken())
+      try {
+        const refreshToken = localStorage.getItem('refreshToken');
+        const response = await axios.post('/api/auth/refresh-token', { refreshToken });
 
-          if (payload?.accessToken) {
-            originalRequest.headers.Authorization = `Bearer ${payload.accessToken}`
-            return authApi(originalRequest)
-          }
-        } catch (refreshError) {
-          console.error('Token refresh failed', refreshError)
-        }
+        const { accessToken } = response.data;
+        localStorage.setItem('accessToken', accessToken);
+        originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+
+        return axiosConfig(originalRequest);
+      } catch (refreshError) {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        window.location.href = '/login';
+        return Promise.reject(refreshError);
       }
-
-      return Promise.reject(error)
     }
-  )
 
-  return authApi
-}
+    return Promise.reject(error);
+  }
+);
+
+export default axiosConfig;
