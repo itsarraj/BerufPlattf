@@ -1,52 +1,32 @@
-'use client'
+'use client';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAppSelector } from '@/lib/hooks/redux';
+import { checkAuth } from '@/lib/slices/authSlice';
+import { useAppDispatch } from '@/lib/hooks/redux';
 
-import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import { useAppSelector, useAppDispatch } from '@/lib/hooks/redux'
-import { addToast } from '@/lib/slices/uiSlice'
-
-export default function AuthGuard({
-  children,
-  requireAuth = true,
-  allowedRoles = ['user', 'recruiter']
-}: {
-  children: React.ReactNode
-  requireAuth?: boolean
-  allowedRoles?: ('user' | 'recruiter')[]
-}) {
-  const dispatch = useAppDispatch()
-  const { isAuthenticated, user } = useAppSelector((state) => state.auth)
-  const router = useRouter()
+export default function AuthGuard({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const { user, loading } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
-    if (requireAuth && !isAuthenticated) {
-      dispatch(addToast({
-        message: 'You need to sign in to access this page',
-        type: 'error'
-      }))
-      router.push('/login')
-    }
+    dispatch(checkAuth());
+  }, [dispatch]);
 
-    if (isAuthenticated && user && !allowedRoles.includes(user.role)) {
-      dispatch(addToast({
-        message: 'You do not have permission to access this page',
-        type: 'error'
-      }))
-      router.push('/dashboard')
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push('/login');
     }
+  }, [user, loading, router]);
 
-    if (!requireAuth && isAuthenticated) {
-      router.push('/dashboard')
-    }
-  }, [isAuthenticated, user, requireAuth, allowedRoles, router, dispatch])
-
-  if (requireAuth && !isAuthenticated) {
-    return <div>Loading authentication...</div>
+  if (loading || !user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gold-sun"></div>
+      </div>
+    );
   }
 
-  if (requireAuth && isAuthenticated && user && !allowedRoles.includes(user.role)) {
-    return <div>Checking permissions...</div>
-  }
-
-  return <>{children}</>
+  return <>{children}</>;
 }

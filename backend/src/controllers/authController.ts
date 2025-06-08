@@ -4,7 +4,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { pool } from '../database/connection';
 import { hashPassword, validatePassword } from '../utils/helpers';
 import logger from '../utils/logger';
-import { AuthenticatedRequest } from '../interfaces/authRequest';
 
 // Helper for logging user events
 async function logUserEvent(
@@ -211,7 +210,7 @@ export const refreshToken = async (req: Request, res: Response) => {
 };
 
 // LOGOUT
-export const logoutUser = async (req: AuthenticatedRequest, res: Response) => {
+export const logoutUser = async (req: Request, res: Response) => {
   let conn = await pool.getConnection();
   const { refreshToken } = req.body;
 
