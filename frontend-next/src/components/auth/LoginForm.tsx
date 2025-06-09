@@ -3,9 +3,8 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
-import { authApi } from '@/lib/api/authApi';
 import { useAppDispatch } from '@/lib/hooks/redux';
-import { setCredentials } from '@/lib/slices/authSlice';
+import { loginUser } from '@/lib/slices/authSlice';
 import { useRouter } from 'next/navigation';
 
 interface LoginFormData {
@@ -13,24 +12,34 @@ interface LoginFormData {
   password: string;
 }
 
-export const LoginForm = () => {
+interface LoginFormProps {
+  onSuccess?: () => void;
+}
+
+export const LoginForm = ({ onSuccess }: LoginFormProps) => {
   const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>();
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
 
+  // This function receives form data from React Hook Form
   const onSubmit = async (data: LoginFormData) => {
+    setIsLoading(true);
+    setError(null);
+
     try {
-      setIsLoading(true);
-      const response = await authApi.login(data.email, data.password);
+      const result = await dispatch(loginUser(data));
 
-      dispatch(setCredentials({
-        accessToken: response.accessToken,
-        refreshToken: response.refreshToken,
-        user: { id: response.id, email: data.email }
-      }));
-
-      router.push('/dashboard');
+      if (loginUser.fulfilled.match(result)) {
+        onSuccess?.();
+        // Optionally, redirect after login:
+        // router.push('/dashboard');
+      } else if (loginUser.rejected.match(result)) {
+        setError(result.payload as string);
+      }
+    } catch (err) {
+      setError('An unexpected error occurred');
     } finally {
       setIsLoading(false);
     }
@@ -51,6 +60,8 @@ export const LoginForm = () => {
         {...register('password', { required: 'Password is required' })}
         error={errors.password?.message}
       />
+
+      {error && <div className="text-red-500">{error}</div>}
 
       <Button
         variant="primary"

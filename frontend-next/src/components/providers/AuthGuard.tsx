@@ -1,29 +1,50 @@
+// components/providers/AuthGuard.tsx
 'use client';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAppSelector } from '@/lib/hooks/redux';
-import { checkAuth } from '@/lib/slices/authSlice';
-import { useAppDispatch } from '@/lib/hooks/redux';
+import { selectIsAuthenticated, selectAuthLoading } from '@/lib/slices/authSlice';
 
-export default function AuthGuard({ children }: { children: React.ReactNode }) {
+interface AuthGuardProps {
+  children: React.ReactNode;
+  fallback?: React.ReactNode;
+  redirectTo?: string;
+}
+
+export function AuthGuard({
+  children,
+  fallback,
+  redirectTo = '/login'
+}: AuthGuardProps) {
   const router = useRouter();
-  const dispatch = useAppDispatch();
-  const { user, loading } = useAppSelector((state) => state.auth);
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+  const loading = useAppSelector(selectAuthLoading);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    dispatch(checkAuth());
-  }, [dispatch]);
+    setIsClient(true);
+  }, []);
 
   useEffect(() => {
-    if (!loading && !user) {
-      router.push('/login');
+    if (isClient && !loading && !isAuthenticated) {
+      router.push(redirectTo);
     }
-  }, [user, loading, router]);
+  }, [isAuthenticated, loading, router, redirectTo, isClient]);
 
-  if (loading || !user) {
-    return (
+  // Show loading during SSR or while auth is loading
+  if (!isClient || loading) {
+    return fallback || (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gold-sun"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
+  // Show loading while redirecting
+  if (!isAuthenticated) {
+    return fallback || (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
       </div>
     );
   }

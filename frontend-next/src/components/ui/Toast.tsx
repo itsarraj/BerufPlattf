@@ -7,7 +7,7 @@ interface ToastProps {
   onClose: (id: string) => void
 }
 
-export default function Toast({ id, message, type, onClose }: ToastProps) {
+export function Toast({ id, message, type, onClose }: ToastProps) {
   const getIcon = () => {
     switch (type) {
       case 'success':
