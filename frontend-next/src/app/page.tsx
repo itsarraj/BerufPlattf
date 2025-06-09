@@ -1,4 +1,3 @@
-'use client'
 import './globals.css';
 import Image from 'next/image';
 import { Button } from '@/components/ui/Button';
@@ -23,7 +22,7 @@ export default async function Home() {
           Discover thousands of job opportunities from top companies around the world.
           Tailor your search to find the perfect match for your skills and career goals.
         </p>
-        <Link href="/homepage">
+        <Link href="/dashboard">
           <Button
             variant="primary"
             size="xl"
@@ -31,22 +30,8 @@ export default async function Home() {
             Start Searching
           </Button>
         </Link>
-        <BackButton href="/back"/>
-        <Divider/>
-        <Select fullWidth={true}/>
-        <Input  fullWidth={true}/>
-        <Textarea fullWidth={true}/>
       </div>
 
-      <div className="mt-8">
-        {/* <Image
-          src="/assets/root-logos.png"
-          alt="Featured companies"
-          width={800}
-          height={300}
-          className="max-w-full"
-        /> */}
-      </div>
     </div>
   );
 }

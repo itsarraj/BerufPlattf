@@ -1,1 +1,0 @@
-// Job Readiness Score page
