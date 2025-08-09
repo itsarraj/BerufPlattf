@@ -1,6 +1,5 @@
 // src/database/connection.ts
 import mariadb from 'mariadb';
-import logger from '../utils/logger';
 
 // Default values if environment variables are not set
 const DB_HOST = process.env.DB_HOST || 'localhost';
@@ -27,10 +26,10 @@ export async function testConnection(): Promise<boolean> {
   let conn;
   try {
     conn = await pool.getConnection();
-    logger.info(`DB Connected successfully (thread ID: ${conn.threadId})`);
+    // logger.info(`DB Connected successfully (thread ID: ${conn.threadId})`);
     return true;
   } catch (error) {
-    logger.error('DB Connection failed', { error });
+    // logger.error('DB Connection failed', { error });
     return false;
   } finally {
     if (conn) {
@@ -43,9 +42,9 @@ export async function testConnection(): Promise<boolean> {
 testConnection()
   .then(success => {
     if (!success) {
-      logger.error('Initial database connection test failed');
+      // logger.error('Initial database connection test failed');
     }
   })
   .catch(err => {
-    logger.error('Unexpected error during connection test', { error: err });
+    // logger.error('Unexpected error during connection test', { error: err });
   });
