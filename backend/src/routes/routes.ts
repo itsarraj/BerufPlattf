@@ -1,15 +1,17 @@
 // src/routes/routes.ts
-import { Router } from 'express';
-import authRoutes from './authRoutes';
+import { Router, Request, Response } from 'express';
+
+import carrerRoutes from './carrerRoutes';
 
 const router = Router();
 
 // Public routes
-router.use('/auth', authRoutes);
+router.use('/career', carrerRoutes);
 
-// Add a simple test route
-router.get('/health', (req, res) => {
+// -------------------- Health Check --------------------
+router.get('/health', (req: Request, res: Response) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
+
 
 export default router;

@@ -25,7 +25,9 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.17.1",
     "@types/morgan": "^1.9.9",
+    "axios": "^1.11.0",
     "bcrypt": "^5.1.1",
     "colors": "^1.4.0",
     "cors": "^2.8.5",

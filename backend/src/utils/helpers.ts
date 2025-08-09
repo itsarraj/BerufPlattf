@@ -1,5 +1,4 @@
 import bcrypt from 'bcrypt';
-import logger from './logger';
 
 // Hashing configuration
 const SALT_ROUNDS = process.env.BCRYPT_SALT_ROUNDS
@@ -14,7 +13,6 @@ export const hashPassword = async (password: string): Promise<string | null> => 
     const salt = await bcrypt.genSalt(SALT_ROUNDS);
     return await bcrypt.hash(password, salt);
   } catch (error) {
-    logger.error('Password hashing failed', { error });
     return null;
   }
 };
@@ -29,7 +27,6 @@ export const validatePassword = async (
   try {
     return await bcrypt.compare(plainPassword, hashedPassword);
   } catch (error) {
-    logger.error('Password validation failed', { error });
     return null;
   }
 };

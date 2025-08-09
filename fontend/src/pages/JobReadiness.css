@@ -1,0 +1,195 @@
+/* src/pages/JobReadiness.css */
+.job-readiness {
+  padding: 2rem 0 4rem;
+  min-height: calc(100vh - 200px);
+}
+
+.analysis-form {
+  max-width: 800px;
+  margin: 0 auto;
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f3f4f6;
+}
+
+.form-group textarea {
+  min-height: 120px;
+  line-height: 1.5;
+}
+
+.form-group textarea[name="resumeText"] {
+  min-height: 300px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+}
+
+.prompt-suggestions {
+  margin-top: 1rem;
+}
+
+.prompt-suggestions p {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.suggestions-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+}
+
+.suggestion-btn {
+  text-align: left;
+  padding: 0.75rem;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  line-height: 1.4;
+}
+
+.suggestion-btn:hover {
+  background: #f3f4f6;
+  border-color: #3b82f6;
+  color: #3b82f6;
+}
+
+.suggestion-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.analysis-result {
+  max-width: 800px;
+  margin: 3rem auto 0;
+  background: #f8f9fa; /* new lighter background */
+  padding: 1.5rem; /* updated from new style */
+  border-radius: 8px; /* smaller radius from new style */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
+}
+
+.analysis-result h2 {
+  color: #1f2937;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  font-weight: 700;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 0.5rem;
+}
+
+.result-content {
+  border-radius: 8px;
+}
+
+.result-content pre {
+  background: #272822; /* new dark theme background */
+  color: #f8f8f2; /* new text color */
+  padding: 1rem; /* new padding */
+  border-radius: 5px; /* smaller radius for code block */
+  overflow-x: auto; /* keep horizontal scrolling if needed */
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-family: 'Courier New', monospace;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.result-content h3 {
+  margin-top: 1rem; /* from new style */
+}
+
+/* Responsive design from old CSS */
+@media (max-width: 768px) {
+  .analysis-result {
+    margin-left: 1rem;
+    margin-right: 1rem;
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .result-content pre {
+    font-size: 0.9rem;
+  }
+}
+
+/* Add these styles to JobReadiness.css */
+.score-section {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.score-display {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #3b82f6;
+  margin: 0.5rem 0;
+}
+
+.score-change {
+  font-size: 1rem;
+  color: #10b981;
+}
+
+.improvement {
+  background: #ecfdf5;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+.suggestions-section {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.suggestions-list {
+  padding-left: 1.25rem;
+  margin-top: 1rem;
+}
+
+.suggestions-list li {
+  margin-bottom: 0.75rem;
+  line-height: 1.5;
+  color: #4b5563;
+}
+
+.suggestions-list li::marker {
+  color: #3b82f6;
+}
+
+.markdown-container table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.markdown-container th,
+.markdown-container td {
+  padding: 0.75rem;
+  text-align: left;
+  border: 1px solid #e5e7eb;
+}
+
+.markdown-container th {
+  background-color: #f9fafb;
+  font-weight: 600;
+}
+
+.table-container {
+  overflow-x: auto;
+  margin: 1rem 0;
+}
