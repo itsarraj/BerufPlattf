@@ -22,13 +22,6 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
-
-    // Temporary
-    "strict": false, // Disable strict mode
-    "noUnusedLocals": false, // Disable unused locals warning
-    "noUnusedParameters": false, // Disable unused parameters warning
-    "noFallthroughCasesInSwitch": false // Disable fallthrough cases warning
-
   },
   "include": ["src"]
 }

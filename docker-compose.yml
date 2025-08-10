@@ -2,36 +2,31 @@ version: '3.8'
 
 services:
   frontend:
-    build:
-      context: ./frontend-next
-      target: dev
+    build: ./frontend
     ports:
-      - "3000:3000"
-    volumes:
-      - ./frontend-next:/app
-      # Remove node_modules volume mount
-    environment:
-      - CHOKIDAR_USEPOLLING=true
-      - NEXT_PUBLIC_API_BASE_URL=http://backend:8000
+      - "80:80"
+    depends_on:
+      - backend
+      - llm_service
+    networks:
+      - app-network
 
   backend:
-    build:
-      context: ./backend
-      target: dev
-    ports:
-      - "8000:8000"
-    volumes:
-      - ./backend:/app
-      # Remove node_modules volume mount
-      - ./backend/logs:/app/logs
-      - ./backend/uploads:/app/uploads
+    build: ./backend
+    env_file:
+      - .env
     environment:
-      - NODE_ENV=development
-      - AI_SERVICE_URL=http://ai:8001
+      - MCP_SERVER_URL=http://llm_service:3000/mcp
+    networks:
+      - app-network
 
-  ai:
-    build:
-      context: ./ai_microservice
-      target: runtime  # Use specific target
-    ports:
-      - "8001:8001"
+  llm_service:
+    build: ./llm_service
+    env_file:
+      - .env
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

@@ -1,6 +1,12 @@
+import dotenv from 'dotenv';
+
+// Load environment variables
+dotenv.config();
+
 import { transport } from './transport';
 import { server } from './server';
 import { createServer } from 'node:http';
+import { config } from './utils/config';
 
 async function main() {
   try {
@@ -11,9 +17,10 @@ async function main() {
     });
 
     // Default: listens on localhost
-    httpServer.listen(3000, () => {
-      console.log('MCP server listening on http://localhost:3000');
+    httpServer.listen(config.PORT, () => {
+      console.log(`MCP server listening on http://localhost:${config.PORT}`);
     });
+
 
     console.log('MCP Server running');
   } catch (error) {

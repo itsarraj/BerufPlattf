@@ -7,15 +7,10 @@ import fs from 'fs';
 // Load environment variables
 dotenv.config();
 
-import { initializeDatabase } from './database/init';
 import router from './routes/routes';
 
 async function startServer() {
   try {
-    // Initialize database
-    await initializeDatabase();
-    console.log('✅ Database connection established');
-
     const app = express();
     const PORT = process.env.PORT || 8000;
 

@@ -8,5 +8,4 @@ export default defineConfig({
   server: {
     port: 9000,
   },
-  assetsInclude: ['**/*.ttf', '**/*.otf'],
 });
