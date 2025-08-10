@@ -20,6 +20,7 @@ const JobReadiness = () => {
   const [analysisType, setAnalysisType] = useState<JobReadinessType>('FULL');
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<AnalysisResult | null>(null);
+  const resultRef = React.useRef<HTMLDivElement>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -65,6 +66,9 @@ const JobReadiness = () => {
           success: true
         });
         toast.success('Analysis completed!');
+        setTimeout(() => {
+          resultRef.current?.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
       } else {
         throw new Error(data.error || 'Analysis failed');
       }
@@ -196,7 +200,7 @@ const JobReadiness = () => {
 
         {/* Results */}
         {result && (
-          <div className="mt-8 bg-[#2B2B2B] border border-gray-700 rounded-2xl overflow-hidden shadow-2xl">
+          <div ref={resultRef} className="mt-8 bg-[#2B2B2B] border border-gray-700 rounded-2xl overflow-hidden shadow-2xl">
             <div className="px-8 py-6 border-b border-gray-700 bg-gradient-to-r from-[#5324FD]/10 to-[#FCC636]/10">
               <h2 className="text-2xl font-bold text-white flex items-center">
                 <svg className="w-6 h-6 mr-3 text-[#FCC636]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
