@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { config } from '../utils/config';
 
 export function registerJobReadinessTools(server: McpServer) {
   server.registerTool(
@@ -14,14 +15,13 @@ export function registerJobReadinessTools(server: McpServer) {
     },
     async ({ resumeText, prompt }) => {
       const body = {
-        model: "deepseek-r1:1.5b", // deepseek's response is only correct
-        // model: "tinyllama",
+        model: config.DEFAULT_MODEL,
         prompt: `[INST] ${prompt}\n\nRESUME:\n${resumeText}\n[/INST]`,
         stream: false,
       };
 
       try {
-        const res = await fetch('https://mlvoca.com/api/generate', {
+        const res = await fetch(config.ML_VOCA_API_URL, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -38,9 +38,6 @@ export function registerJobReadinessTools(server: McpServer) {
         }
 
         const data = await res.json();
-    console.log("----------------\n")
-    console.log("----------------\n", data)
-    console.log("----------------\n")
         return {
           content: [{ type: 'text', text: data.response }],
           isError: false,

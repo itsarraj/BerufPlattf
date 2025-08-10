@@ -1,9 +1,10 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { registerTools } from "./tools/index";
+import { config } from "./utils/config";
 
 export const server = new McpServer({
-  name: "recruiting-assistant",
-  version: "1.0.0",
+  name: config.MCP_SERVER_NAME,
+  version: config.MCP_SERVER_VERSION,
   capabilities: {
     resources: {
       subscribe: true,

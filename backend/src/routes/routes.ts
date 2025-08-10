@@ -1,4 +1,3 @@
-// src/routes/routes.ts
 import { Router, Request, Response } from 'express';
 
 import carrerRoutes from './carrerRoutes';

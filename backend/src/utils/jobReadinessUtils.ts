@@ -1,4 +1,4 @@
-// bff/src/utils/promptFactory.ts
+// bff/src/utils/jobReadinessUtils.ts
 import { z } from 'zod';
 
 // ======================
